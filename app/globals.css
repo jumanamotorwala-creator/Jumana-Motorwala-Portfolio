@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  body {
+    @apply bg-paper text-navy antialiased;
+  }
+
+  /* Visible keyboard focus everywhere — never suppressed with outline: none */
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-lime;
+  }
+}
+
+/* Plain CSS keyframe for the rotating badge — written directly here (not
+   through Tailwind's theme.extend.animation) so it doesn't depend on the
+   Tailwind build picking up a custom utility correctly. Still respects
+   the prefers-reduced-motion override above, since that rule targets `*`. */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Seamless horizontal ticker for the About page strip — two identical
+   copies of the phrase sit side by side, and this slides exactly 50% of
+   the combined width, so copy #2 lands exactly where copy #1 started.
+   Same reduced-motion coverage as spin-slow, via the `*` rule above. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 22s linear infinite;
+}
